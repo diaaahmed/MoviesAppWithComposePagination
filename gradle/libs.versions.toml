@@ -1,0 +1,32 @@
+[versions]
+
+core = "1.10.1"
+retrofit = "2.9.0"
+hilt = "2.46.1"
+coroutines = "1.7.0"
+pagingcommon = "3.1.1"
+appCompat = "1.6.1"
+material = "1.8.0"
+targetSdk = "33"
+minSdk = "24"
+chucker = "3.5.2"
+espresso = "3.5.1"
+junit = "1.1.5"
+junittest = "4.13.2"
+
+[libraries]
+
+core = {group = "androidx.core", name = "core-ktx", version.ref = "core"}
+retrofit = {group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit"}
+gsonconverter = {group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit"}
+hilt = {group = "com.google.dagger", name = "hilt-android", version.ref = "hilt"}
+hiltcompiler = {group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt"}
+coroutines = {group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines"}
+pagingcommon = {group = "androidx.paging", name = "paging-common-ktx", version.ref = "pagingcommon"}
+appCompat = {group = "androidx.appcompat",name = "appcompat", version.ref = "appCompat"}
+chucker = {group = "com.github.chuckerteam.chucker",name = "library", version.ref = "chucker"}
+espresso = {group = "androidx.test.espresso",name = "espresso-core", version.ref = "espresso"}
+junit = {group = "androidx.test.ext",name = "junit", version.ref = "junit"}
+junittest = {group = "junit",name = "junit", version.ref = "junittest"}
+
+[plugins]

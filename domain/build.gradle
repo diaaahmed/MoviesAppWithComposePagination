@@ -1,0 +1,18 @@
+plugins {
+    id 'java-library'
+    id 'org.jetbrains.kotlin.jvm'
+}
+
+java {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+}
+
+
+dependencies {
+
+    // Coroutines
+    implementation libs.coroutines
+    implementation 'javax.inject:javax.inject:1'
+    api libs.pagingcommon
+}
