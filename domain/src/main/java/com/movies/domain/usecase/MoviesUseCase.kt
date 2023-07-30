@@ -12,22 +12,20 @@ import javax.inject.Inject
 
 class MoviesUseCase @Inject constructor(private val repository: MoviesRepo) {
 
-    operator fun invoke(lang:String,catId:String): Flow<Resource<Pager<Int, MovieItem>>>
-    = flow {
+    operator fun invoke(lang: String, catId: String): Flow<Resource<Pager<Int, MovieItem>>> = flow {
         try {
-             emit(Resource.Loading())
+            emit(Resource.Loading())
 
             val getMovies = Pager(
                 config = PagingConfig(pageSize = 10),
             ) {
-                MoviePagingSource(repository,catId,lang)
+                MoviePagingSource(repository, catId, lang)
             }
-
             emit(Resource.Success(getMovies))
-        }catch (e:Exception){
+        } catch (e: Exception) {
             emit(Resource.Error("${e.localizedMessage} : An unexpected error happened"))
-        }
 
+        }
     }
 }
 

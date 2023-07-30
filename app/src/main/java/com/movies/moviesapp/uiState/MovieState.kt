@@ -1,4 +1,4 @@
-package com.movies.moviesapp
+package com.movies.moviesapp.uiState
 
 import androidx.paging.Pager
 import com.movies.domain.entity.MovieItem

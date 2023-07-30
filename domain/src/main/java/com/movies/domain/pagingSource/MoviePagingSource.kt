@@ -11,10 +11,6 @@ class MoviePagingSource(
     val language:String,
 ) : PagingSource<Int, MovieItem>()
 {
-    init {
-        println("Welcome to paging")
-    }
-
     override fun getRefreshKey(state: PagingState<Int, MovieItem>): Int? {
         return null
     }
@@ -35,9 +31,8 @@ class MoviePagingSource(
         }
         catch (e:Exception)
         {
-            println("diaa here called error")
+            println("diaa here called error ${e.message}")
             LoadResult.Error(e)
         }
     }
-
 }

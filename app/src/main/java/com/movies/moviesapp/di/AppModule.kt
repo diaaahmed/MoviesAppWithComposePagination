@@ -6,7 +6,9 @@ import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.chuckerteam.chucker.api.RetentionManager
 import com.movies.data.constant.Constant
 import com.movies.data.remote.IMovieService
+import com.movies.data.repo.CategoryRepoImpl
 import com.movies.data.repo.MoviesRepoImpl
+import com.movies.domain.repo.CategoryRepo
 import com.movies.domain.repo.MoviesRepo
 import dagger.Module
 import dagger.Provides
@@ -74,4 +76,8 @@ object AppModule
     @Singleton
     @Provides
     fun provideMoviesRepo(movieService: IMovieService):MoviesRepo = MoviesRepoImpl(movieService)
+
+    @Singleton
+    @Provides
+    fun provideCategoryRepo(movieService: IMovieService):CategoryRepo = CategoryRepoImpl(movieService)
 }

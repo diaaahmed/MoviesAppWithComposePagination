@@ -1,88 +1,111 @@
 package com.movies.moviesapp
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+
+import androidx.compose.material.BottomNavigation
+import androidx.compose.material.BottomNavigationItem
+import androidx.compose.material.Icon
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
+
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
-import androidx.lifecycle.lifecycleScope
-import androidx.paging.compose.collectAsLazyPagingItems
-import com.movies.moviesapp.ui.theme.MoviesAppTheme
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+
+import com.movies.moviesapp.component.TopBar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
-import java.util.Locale
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    private val mainViewModel: MainViewModel by viewModels()
 
-
+    @SuppressLint(
+        "UnusedMaterial3ScaffoldPaddingParameter",
+        "UnusedMaterialScaffoldPaddingParameter"
+    )
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MoviesAppTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    getAndSetMovies()
+
+            val navController = rememberNavController()
+
+            val items = listOf(
+                AllScreens.Home, AllScreens.Category
+            )
+
+            Scaffold(topBar = {
+                TopBar(title = "Home page")
+            },
+                bottomBar = {
+                    val navBackStackEntry by navController.currentBackStackEntryAsState()
+                    val currentRoute = navBackStackEntry?.destination?.route
+
+                    BottomNavigation {
+                        items.forEach { screens ->
+                            BottomNavigationItem(
+                                icon = {
+                                    Icon(
+                                        imageVector = screens.icon,
+                                        contentDescription = null
+                                    )
+                                },
+                                label = { Text(text = screens.title) },
+                                selected = currentRoute == screens.route,
+                                onClick = {
+
+                                    if(screens.route.contains("home"))
+                                    {
+                                        navController.navigate("home_screen/0/empty") {
+                                            // To home back directly
+
+                                            popUpTo(navController.graph.findStartDestination().id) {
+                                                saveState = true
+                                            }
+                                            launchSingleTop = true
+                                     //       restoreState = true
+
+                                        }
+                                    }
+                                    else
+                                    {
+                                        navController.navigate(screens.route) {
+                                            // To home back directly
+                                            popUpTo(navController.graph.findStartDestination().id) {
+                                                saveState = true
+                                            }
+                                            launchSingleTop = true
+                                            restoreState = true
+
+                                        }
+                                    }
+
+                                }
+                            )
+                        }
+                    }
+                }) {
+                Column(modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight()) {
+                    GetAndSetMovies(navController)
                 }
             }
+
         }
     }
 
     @Composable
-    fun getAndSetMovies() {
-        Column()
-        {
-
-            mainViewModel.getMoviesA(Locale.getDefault().language, "53")
-
-            val movies = mainViewModel.movies.value.movies!!.flow.collectAsLazyPagingItems()
-
-            if(mainViewModel.movies.value.isLoading)
-            {
-                println("Diaa data is loading")
-            }
-            else if(mainViewModel.movies.value.error.isNotEmpty())
-            {
-                println("Diaa data error ${mainViewModel.movies.value.error}")
-
-            }
-            else{
-
-                LazyVerticalGrid(columns = GridCells.Fixed(2))
-                {
-                    items(movies.itemCount){index->
-                        Card(
-                            modifier = Modifier
-                                .padding(4.dp)
-                                .fillMaxSize(),
-                        ) {
-
-                            MovieItem(movies[index]!!)
-                        }
-                    }
-                }
-            }
-
-
-        }
-
+    fun GetAndSetMovies(navController: NavHostController)
+    {
+        Nav(navController = navController)
     }
 }
